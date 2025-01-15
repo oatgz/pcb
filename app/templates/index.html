@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCB Detection Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .image-box {
+            text-align: center;
+            border: 2px solid #ddd;
+            padding: 10px;
+        }
+        img {
+            max-width: 300px;
+            height: auto;
+            border: 2px solid green;
+        }
+        .info {
+            margin-top: 5px;
+            font-size: 14px;
+            color: black;
+        }
+        .upload-container {
+            margin: 20px 0;
+        }
+        .summary {
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>PCB Detection Results</h1>
+    
+    <div class="upload-container">
+        <a href="{{ url_for('upload') }}">
+            <button>Upload New Image</button>
+        </a>
+    </div>
+
+    <div class="image-container">
+        {% for result in results %}
+        <div class="image-box">
+            <img src="{{ url_for('serve_image', filename=result[0]) }}" alt="Detection Image">
+            <div class="info">
+                <p><strong>Class:</strong> {{ result[1] }}</p>
+                <p><strong>Confidence:</strong> {{ result[2] }}</p>
+                <p><strong>Bounding Box:</strong> ({{ result[3] }}, {{ result[4] }}) to ({{ result[5] }}, {{ result[6] }})</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="summary">
+        <h2>Summary of Detection Results</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Class</th>
+                    <th>Count</th>
+                    <th>Average Confidence</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for class_summary in summary %}
+                <tr>
+                    <td>{{ class_summary[0] }}</td>
+                    <td>{{ class_summary[1] }}</td>
+                    <td>{{ class_summary[2]|round(2) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

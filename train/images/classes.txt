@@ -1,0 +1,5 @@
+mid_area
+top_area
+tompstone
+open_solder_top
+open_circuit
